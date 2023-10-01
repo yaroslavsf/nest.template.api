@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DB_CONNECTION_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+///implicit m-m
+// intermediate table has no keys, has only 2 columns, there are just 2 references(useless)
+
+model User {
+  id      String  @default(uuid()) @db.Uuid         @id 
+  email   String  @unique 	       @db.VarChar(30)
+  name    String?	@db.VarChar(30)
+  surname String?	@db.VarChar(30)
+  roles   Role[]  
+}
+
+model Role {
+  id    String  @default(uuid()) @db.Uuid @id
+  name  String	@db.VarChar(30)
+  users User[] 
+}

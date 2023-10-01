@@ -1,0 +1,22 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DB_CONNECTION_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+///1 - m
+// can create a Post without assigning a User
+
+model User {
+  id      String       @default(uuid())                                 @db.Uuid      @id
+  posts Post[]
+}
+
+model Post {
+  id      String       @default(uuid())                                 @db.Uuid      @id
+  author   User?        @relation(fields: [authorId], references: [id])
+  authorId String       @db.Uuid
+}

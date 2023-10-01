@@ -1,0 +1,22 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DB_CONNECTION_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+///1 - 1
+// cannot create a User without connecting or creating a Profile(mandatory)
+
+model User {
+  id        String    @default(uuid())                                  @db.Uuid      @id
+  profile   Profile   @relation(fields: [profileId], references: [id]) // references `id` of `Profile`
+  profileId String    @db.Uuid                                          @unique // relation scalar field (used in the `@relation` attribute above)
+}
+
+model Profile {
+  id      String       @default(uuid())     @db.Uuid      @id
+  user User?
+}
