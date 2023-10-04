@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "typeorm-ts-node-esm"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -26,15 +27,16 @@
     "@nestjs/jwt": "^10.1.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "^5.3.1",
+    "@nestjs/typeorm": "^10.0.0",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "helmet": "^7.0.0",
     "joi": "^17.10.2",
-    "prisma": "^5.3.1",
+    "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
