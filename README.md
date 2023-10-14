@@ -4,14 +4,19 @@
 ```bash
 docker-compose up
 ```
-### Change schema
-- location: `./prisma/schema.prisma`
-- run to generate migration
+
+### Run migration and seeding
 ```bash
-yarn prisma migrate dev --name init
+yarn run build #generate dist 
+yarn run typeorm migration:run -- -d "src/db/db-source.ts"
 ```
 
-
+### Create migration from entities
+If entity is changed, apply changes in new migration 
+```bash
+yarn run build #generate dist 
+yarn run typeorm migration:generate -d "src/db/db-source.ts" "src/db/migrations/init"
+```
 # Application
 
 - Install packages
