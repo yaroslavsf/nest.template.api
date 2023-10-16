@@ -8,7 +8,7 @@ import helmet from 'helmet'
 import { corseConfig, helmetConfig } from './main.config';
 import { LoggerService } from './logger/logger.service';
 import { ErrorsInterceptor } from './common/interceptors';
-
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 class Application {
   public configService: ConfigService;
   public loggerService: LoggerService;
@@ -40,6 +40,18 @@ class Application {
     } else if (nodeEnv === EConfigEnvironment.development) {
       console.log("development");
     }
+
+    //swagger
+    const document = SwaggerModule.createDocument(
+        this.app,
+        new DocumentBuilder().setTitle('API').setVersion('1.0').build(),
+    );
+    SwaggerModule.setup(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.configService.get('API_DOC_PATH')!,
+        this.app,
+        document,
+    );
 
     //logger settings
     this.app.useGlobalInterceptors(
