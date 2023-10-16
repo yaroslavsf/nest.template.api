@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository} from 'typeorm';
 import {User} from './user.entity';
+import {RoleService} from "../roles/roles.service";
+import {Role} from "../roles/role.entity";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private roleService: RoleService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -19,8 +22,15 @@ export class UserService {
   }
 
   async create(user: Partial<User>): Promise<User> {
-    const newuser = this.userRepository.create(user);
-    return this.userRepository.save(newuser);
+    const newUser = this.userRepository.create(user);
+    await this.roleService.findByName('USER')
+        .then((data: Role) => {
+          newUser.roles.push(data)
+        })
+        .catch(() => {
+          throw new Error("user role doesn't exist");
+        })
+    return this.userRepository.save(newUser);
   }
 
   async update(id: string, user: Partial<User>): Promise<User> {
