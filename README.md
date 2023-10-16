@@ -36,3 +36,7 @@ yarn install
     yarn run build
     yarn run start:prod
     ```
+# Debug
+### Add following configuration
+![img.png](img.png)
+![img_1.png](img_1.png)
