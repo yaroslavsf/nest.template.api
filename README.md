@@ -18,7 +18,6 @@ yarn run build #generate dist
 yarn run typeorm migration:generate -d "src/db/db-source.ts" "src/db/migrations/init"
 ```
 # Application
-
 - Install packages
 
 ```bash
@@ -36,6 +35,10 @@ yarn install
     yarn run build
     yarn run start:prod
     ```
+
+# Swagger
+http://localhost:3000/api/docs
+
 # Debug
 ### Add following configuration
 ![img.png](img.png)
