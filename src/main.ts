@@ -16,7 +16,7 @@ class Application {
   private app: INestApplication;
 
   constructor() {
-    this.loggerService = new LoggerService('Dance API');
+    this.loggerService = new LoggerService('API');
   }
 
   public async bootstrap(): Promise<void> {

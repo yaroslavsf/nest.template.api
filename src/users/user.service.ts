@@ -22,15 +22,15 @@ export class UserService {
   }
 
   async create(user: Partial<User>): Promise<User> {
-    const newUser = this.userRepository.create(user);
-    await this.roleService.findByName('USER')
-        .then((data: Role) => {
-          newUser.roles.push(data)
-        })
-        .catch(() => {
-          throw new Error("user role doesn't exist");
-        })
-    return this.userRepository.save(newUser);
+    try {
+      const userRole : Role = await this.roleService.findByName('user');
+      return await this.userRepository.save({
+       ...user,
+       roles: [userRole]
+     });
+    } catch (error) {
+      throw new Error("An error occurred during user creation: " + error.message);
+    }
   }
 
   async update(id: string, user: Partial<User>): Promise<User> {
