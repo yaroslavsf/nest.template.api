@@ -6,6 +6,7 @@ import {UserModule} from "./users/user.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {dataSourceOptions} from "./db/db-source";
 import {RoleModule} from "./roles/role.module";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports : [
@@ -14,6 +15,7 @@ import {RoleModule} from "./roles/role.module";
     TypeOrmModule.forRoot(dataSourceOptions),
     RoleModule,
     UserModule,
+    AuthModule,
     //other modulers, like AuthModule or UsersModule
   ]
 })
