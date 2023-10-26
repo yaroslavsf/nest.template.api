@@ -14,7 +14,7 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+    return  this.userRepository.find();
   }
 
   async findById(id: string): Promise<User> {
@@ -22,6 +22,7 @@ export class UserService {
     if (!user) {
         throw new NotFoundException("user with this id not exist")
     }
+
     return user;
   }
 

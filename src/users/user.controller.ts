@@ -1,14 +1,14 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
-import {User} from "./user.entity";
 import {UserService} from "./user.service";
 import {ApiTags} from "@nestjs/swagger";
+import {User} from "./user.entity";
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) {}
     @Get(':id')
-    public get(@Param('id') id: string): Promise<User | null> {
+    public get(@Param('id') id: string): Promise<User> {
         return this.userService.findById(id);
     }
     @Get()
