@@ -3,23 +3,33 @@ import {UserService} from "../users/user.service";
 import {User} from "../users/user.entity";
 import {SignInDTO} from "./dto/signInDTO";
 import {SignUpDTO} from "./dto/signUpDTO";
+import {JwtService} from "@nestjs/jwt";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService) {}
-
-    async signIn(signInDto: SignInDTO): Promise<User> {
-        const user = await this.userService.findByEmail(signInDto.email);
-        if (!user) {
-            throw new UnauthorizedException("user is not signed up")
+    constructor(private userService: UserService, private jwtService: JwtService) {}
+    async validateUser(email: string, password: string): Promise<User | null> {
+        const user = await this.userService.findByEmail(email)
+        if (user && bcrypt.compareSync(password, user.password)) {
+            return user;
         }
-        if (user?.password !== signInDto.password) {
+        return null;
+    }
+
+    async signIn(signInDto: SignInDTO): Promise<{ accessToken: string }> {
+        const user = this.validateUser(signInDto.email, signInDto.password)
+        if (!user) {
             throw new UnauthorizedException();
         }
-        return user;
+        const payload = { sub: (await user).id };
+        return {
+            accessToken: this.jwtService.sign(payload),
+        };
     }
 
     async signUp(signUpDto: SignUpDTO): Promise<User> {
+        signUpDto.password = await bcrypt.hash(signUpDto.password, 10)
        return this.userService.create(signUpDto)
     }
 }

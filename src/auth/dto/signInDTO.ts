@@ -4,7 +4,7 @@ import {ApiProperty} from "@nestjs/swagger";
 export class SignInDTO {
     @ApiProperty({
         type: String,
-        example: 'email@gmail.com',
+        example: 'admin@gmail.com',
         description: 'Email of user',
     })
     @IsString()

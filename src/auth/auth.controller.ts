@@ -1,10 +1,9 @@
-import {Body, Controller, HttpCode, HttpStatus, Post} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards} from '@nestjs/common';
 import {AuthService} from "./auth.service";
-import {User} from "../users/user.entity";
 import {ApiTags} from "@nestjs/swagger";
 import {SignInDTO} from "./dto/signInDTO";
-import {SignUpDTO} from "./dto/signUpDTO";
-
+import {SignUpDTO} from "./dto/signUpDTO";;
+import {JwtAuthGuard} from "./jwt.guard";
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -12,7 +11,7 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() signInDto: SignInDTO) {
+    signIn(@Body() signInDto: SignInDTO) :  Promise<{ accessToken: string }> {
         return this.authService.signIn(signInDto);
     }
 
@@ -22,4 +21,10 @@ export class AuthController {
         return this.authService.signUp(signUpDto);
     }
 
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
+    @Get('secured')
+    public test(): string {
+        return "response";
+    }
 }
