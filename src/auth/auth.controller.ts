@@ -2,7 +2,7 @@ import {Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards} from '@nes
 import {AuthService} from "./auth.service";
 import {ApiTags} from "@nestjs/swagger";
 import {SignInDTO} from "./dto/signInDTO";
-import {SignUpDTO} from "./dto/signUpDTO";;
+import {SignUpDTO} from "./dto/signUpDTO";
 import {JwtAuthGuard} from "./jwt.guard";
 @ApiTags('auth')
 @Controller('auth')
@@ -24,7 +24,8 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(JwtAuthGuard)
     @Get('secured')
-    public test(): string {
+    public secured(): string {
         return "response";
     }
+
 }

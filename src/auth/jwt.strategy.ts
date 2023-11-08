@@ -11,7 +11,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             secretOrKey: 'yourSecretKey', // Replace with your own secret key
         });
     }
-
     async validate(payload: any): Promise<User> {
         const user = await this.userService.findById(payload.sub);
         if (!user) {

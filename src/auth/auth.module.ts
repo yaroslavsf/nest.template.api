@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import {UserModule} from "../users/user.module";
-import {PassportModule} from "@nestjs/passport";
+import { PassportModule} from "@nestjs/passport";
 import {JwtModule} from "@nestjs/jwt";
 import {JwtStrategy} from "./jwt.strategy";
 
@@ -14,6 +14,9 @@ import {JwtStrategy} from "./jwt.strategy";
       signOptions: { expiresIn: '1h' }, // Token expiration time
     }),],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy]
+  providers: [
+      AuthService,
+    JwtStrategy,
+    ]
 })
 export class AuthModule {}

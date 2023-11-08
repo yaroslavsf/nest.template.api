@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
+import {ConflictException, Injectable, NotFoundException, UsePipes, ValidationPipe} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository} from 'typeorm';
 import {User} from './user.entity';
@@ -14,11 +14,11 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return  this.userRepository.find();
+    return  this.userRepository.find({relations: ['roles']});
   }
 
   async findById(id: string): Promise<User> {
-    const user: User = await this.userRepository.findOne({ where: { id: id }});
+    const user: User = await this.userRepository.findOne({ where: { id: id }, relations: ['roles']});
     if (!user) {
         throw new NotFoundException("user with this id not exist")
     }
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   async findByEmail(email: string) : Promise<User> {
-    return this.userRepository.findOne({where: {email: email}});
+    return this.userRepository.findOne({where: {email: email}, relations: ['roles']});
   }
 
   async create(user: Partial<User>): Promise<User> {
@@ -46,7 +46,7 @@ export class UserService {
 
   async update(id: string, user: Partial<User>): Promise<User> {
     await this.userRepository.update(id, user);
-    return this.userRepository.findOne({ where: { id } });
+    return this.userRepository.findOne({ where: { id } , relations: ['roles']});
   }
 
   async delete(id: string): Promise<void> {

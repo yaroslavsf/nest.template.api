@@ -1,34 +1,35 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put} from '@nestjs/common';
 import {UserService} from "./user.service";
 import {ApiTags} from "@nestjs/swagger";
 import {User} from "./user.entity";
-// TODO: user input/output dto with nested entity (why repository doesnt return roles)
+import {UserDTO} from "./dto/userDTO";
+import {plainToInstance} from 'class-transformer';
+
 @ApiTags('users')
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) {}
     @Get(':id')
-    public get(@Param('id') id: string): Promise<User> {
-        return this.userService.findById(id);
+    public async get(@Param('id') id: string): Promise<UserDTO> {
+        return plainToInstance(UserDTO, await this.userService.findById(id));
     }
     @Get()
-    public getAll(): Promise<User[]> {
-        return this.userService.findAll();
+    public async getAll(): Promise<UserDTO[]> {
+        return plainToInstance(UserDTO, await this.userService.findAll()) ;
     }
 
     @Post()
-    public create(@Body() user: User): Promise<User> {
-        return this.userService.create(user);
+    public async create(@Body() user: User): Promise<UserDTO> {
+        return plainToInstance(UserDTO, this.userService.create(user));
     }
 
     @Put('/:id')
-    public updateById(@Param('id') id: string, @Body() user: User): Promise<User> {
-        return this.userService.update(id, user);
+    public async updateById(@Param('id', new ParseUUIDPipe()) id: string, @Body() user: User): Promise<User> {
+        return plainToInstance(UserDTO, await this.userService.update(id, user));
     }
 
     @Delete('/:id')
-    public deleteById(@Param('id') id: string): Promise<void> {
-        console.log(id)
+    public deleteById(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
         return this.userService.delete(id);
     }
 }
