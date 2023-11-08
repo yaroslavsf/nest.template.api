@@ -3,7 +3,8 @@ import {AuthService} from "./auth.service";
 import {ApiTags} from "@nestjs/swagger";
 import {SignInDTO} from "./dto/signInDTO";
 import {SignUpDTO} from "./dto/signUpDTO";
-import {JwtAuthGuard} from "./jwt.guard";
+import {JwtAuthGuard} from "../common/guards/jwt.guard";
+import {Roles} from "../common/guards/roles.decorator";
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -28,4 +29,11 @@ export class AuthController {
         return "response";
     }
 
+    @Roles('admin')
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(JwtAuthGuard)
+    @Get('admin')
+    public admin(): string {
+        return "response";
+    }
 }
