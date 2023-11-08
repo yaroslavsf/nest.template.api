@@ -17,7 +17,7 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post('register')
-    signUp(@Body() signUpDto: SignUpDTO) {
+    signUp(@Body() signUpDto: SignUpDTO): Promise<{ accessToken: string }> {
         return this.authService.signUp(signUpDto);
     }
 

@@ -28,8 +28,12 @@ export class AuthService {
         };
     }
 
-    async signUp(signUpDto: SignUpDTO): Promise<User> {
+    async signUp(signUpDto: SignUpDTO): Promise<{ accessToken: string }> {
         signUpDto.password = await bcrypt.hash(signUpDto.password, 10)
-       return this.userService.create(signUpDto)
+        const user = await this.userService.create(signUpDto)
+        const payload = { sub: (await user).id };
+        return {
+            accessToken: this.jwtService.sign(payload),
+        };
     }
 }
